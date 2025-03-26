@@ -1,5 +1,6 @@
 {
   "framework": "create-react-app",
+  "installCommand": "cd src/frontend && npm install",
   "buildCommand": "cd src/frontend && CI=false npm run build",
   "outputDirectory": "src/frontend/build",
   "rewrites": [
