@@ -57,7 +57,7 @@ const MainLayout = ({ children }) => {
   
   // Lista de empresas disponíveis
   const companies = [
-    { id: 1, name: 'Eagles Group LLC', type: 'construction' },
+    { id: 1, name: 'Eagles Construction LLC', type: 'construction' },
     { id: 2, name: 'Brazilian Concrete LLC', type: 'concrete' },
     { id: 3, name: 'Eagles Cleaning LLC', type: 'cleaning' }
   ];
@@ -140,7 +140,7 @@ const MainLayout = ({ children }) => {
     <div>
       <Toolbar sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
         <Typography variant="h6" noWrap component="div" sx={{ color: 'primary.main' }}>
-          {currentCompany?.name || 'Eagles Group LLC'}
+          {currentCompany?.name || 'Eagles Construction LLC'}
         </Typography>
       </Toolbar>
       <Divider />
