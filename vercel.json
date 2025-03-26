@@ -1,16 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "src/frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "buildCommand": "CI=false npm run build"
-      }
-    }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/src/frontend/build/index.html" }
+  "buildCommand": "cd src/frontend && npm install && CI=false npm run build",
+  "outputDirectory": "src/frontend/build",
+  "installCommand": "cd src/frontend && npm install",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
