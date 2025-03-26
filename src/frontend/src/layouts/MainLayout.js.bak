@@ -1,0 +1,280 @@
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Avatar,
+  Menu,
+  MenuItem,
+  Badge,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  Dashboard as DashboardIcon,
+  People as PeopleIcon,
+  Business as BusinessIcon,
+  Inventory as InventoryIcon,
+  AttachMoney as MoneyIcon,
+  Group as GroupIcon,
+  Event as EventIcon,
+  Notifications as NotificationsIcon,
+  AccountCircle,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
+} from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../features/auth/authSlice';
+
+const drawerWidth = 240;
+
+const MainLayout = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNotificationsOpen = (event) => {
+    setNotificationsAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationsClose = () => {
+    setNotificationsAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/auth/login');
+  };
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  };
+
+  const menuItems = [
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { text: 'Clients', icon: <PeopleIcon />, path: '/dashboard/clients' },
+    { text: 'Projects', icon: <BusinessIcon />, path: '/dashboard/projects' },
+    { text: 'Materials', icon: <InventoryIcon />, path: '/dashboard/materials' },
+    { text: 'Finances', icon: <MoneyIcon />, path: '/dashboard/finances' },
+    { text: 'Employees', icon: <GroupIcon />, path: '/dashboard/employees' },
+    { text: 'Consultations', icon: <EventIcon />, path: '/dashboard/consultations' },
+  ];
+
+  const drawer = (
+    <div>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
+        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+          Eagles Group CRM
+        </Typography>
+      </Toolbar>
+      <Divider />
+      <List>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton onClick={() => handleNavigate(item.path)}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            {/* Current page title could go here */}
+          </Typography>
+          
+          {/* Notifications */}
+          <IconButton color="inherit" onClick={handleNotificationsOpen}>
+            <Badge badgeContent={3} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <Menu
+            anchorEl={notificationsAnchorEl}
+            open={Boolean(notificationsAnchorEl)}
+            onClose={handleNotificationsClose}
+            PaperProps={{
+              sx: { width: 320, maxHeight: 500 },
+            }}
+          >
+            <MenuItem onClick={handleNotificationsClose}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="subtitle2">New Client Registration</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  John Doe has registered as a new client
+                </Typography>
+              </Box>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleNotificationsClose}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="subtitle2">Project Update</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Downtown Office Building project has been updated
+                </Typography>
+              </Box>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleNotificationsClose}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="subtitle2">Low Material Stock</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Concrete mix is running low in inventory
+                </Typography>
+              </Box>
+            </MenuItem>
+          </Menu>
+          
+          {/* User Menu */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              onClick={handleMenuOpen}
+              color="inherit"
+            >
+              <Avatar
+                alt={user?.name || 'User'}
+                src={user?.photo || ''}
+                sx={{ width: 32, height: 32 }}
+              />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={() => {
+                handleMenuClose();
+                navigate('/dashboard/profile');
+              }}>
+                <ListItemIcon>
+                  <AccountCircle fontSize="small" />
+                </ListItemIcon>
+                Profile
+              </MenuItem>
+              <MenuItem onClick={() => {
+                handleMenuClose();
+                navigate('/dashboard/settings');
+              }}>
+                <ListItemIcon>
+                  <SettingsIcon fontSize="small" />
+                </ListItemIcon>
+                Settings
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      >
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          minHeight: '100vh',
+          backgroundColor: 'background.default',
+        }}
+      >
+        <Toolbar /> {/* This creates space at the top for the AppBar */}
+        <Outlet /> {/* This renders the current route's component */}
+      </Box>
+    </Box>
+  );
+};
+
+export default MainLayout;
