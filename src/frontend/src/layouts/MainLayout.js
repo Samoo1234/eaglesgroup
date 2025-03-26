@@ -140,7 +140,7 @@ const MainLayout = ({ children }) => {
     <div>
       <Toolbar sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
         <Typography variant="h6" noWrap component="div" sx={{ color: 'primary.main' }}>
-          {currentCompany.name}
+          {currentCompany?.name || 'Eagles Group LLC'}
         </Typography>
       </Toolbar>
       <Divider />
@@ -208,7 +208,7 @@ const MainLayout = ({ children }) => {
             }}
           >
             <Select
-              value={currentCompany.id}
+              value={currentCompany?.id || ''}
               onChange={handleCompanyChange}
               displayEmpty
               inputProps={{ 'aria-label': 'Selecionar Empresa' }}
