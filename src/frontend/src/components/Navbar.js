@@ -18,7 +18,7 @@ import {
   ListItem,
   ListItemText
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -79,7 +79,7 @@ const Navbar = () => {
 
   const dashboardButton = isAuthenticated && (
     <Button
-      component={Link}
+      component={RouterLink}
       to="/dashboard"
       variant="contained"
       color="warning"
@@ -110,7 +110,7 @@ const Navbar = () => {
           <ListItem key={item.name} disablePadding>
             <ListItemText>
               <Button 
-                component={Link} 
+                component={RouterLink} 
                 to={item.path} 
                 color="inherit" 
                 fullWidth
@@ -124,7 +124,7 @@ const Navbar = () => {
           <ListItem disablePadding>
             <ListItemText>
               <Button 
-                component={Link} 
+                component={RouterLink} 
                 to="/dashboard" 
                 color="inherit" 
                 fullWidth
@@ -147,7 +147,7 @@ const Navbar = () => {
             <ListItem disablePadding>
               <ListItemText>
                 <Button 
-                  component={Link} 
+                  component={RouterLink} 
                   to="/login" 
                   color="inherit" 
                   fullWidth
@@ -159,7 +159,7 @@ const Navbar = () => {
             <ListItem disablePadding>
               <ListItemText>
                 <Button 
-                  component={Link} 
+                  component={RouterLink} 
                   to="/register" 
                   color="inherit" 
                   fullWidth
@@ -173,7 +173,7 @@ const Navbar = () => {
           <ListItem disablePadding>
             <ListItemText>
               <Button 
-                component={Link} 
+                component={RouterLink} 
                 to="/dashboard" 
                 color="inherit" 
                 fullWidth
@@ -203,7 +203,7 @@ const Navbar = () => {
             </IconButton>
           )}
           
-          <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 0, textDecoration: 'none', color: 'inherit', mr: 2 }}>
+          <Typography variant="h6" component={RouterLink} to="/" sx={{ flexGrow: 0, textDecoration: 'none', color: 'inherit', mr: 2 }}>
             Eagles Group LLC
           </Typography>
           
@@ -215,7 +215,7 @@ const Navbar = () => {
             {navItems.map((item) => (
               <Button 
                 key={item.name} 
-                component={Link} 
+                component={RouterLink} 
                 to={item.path} 
                 color="inherit"
                 sx={{ mx: 1 }}
@@ -297,7 +297,7 @@ const Navbar = () => {
               <>
                 <Button 
                   color="inherit" 
-                  component={Link} 
+                  component={RouterLink} 
                   to="/login"
                   sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
                 >
@@ -306,7 +306,7 @@ const Navbar = () => {
                 <Button 
                   variant="outlined" 
                   color="inherit" 
-                  component={Link} 
+                  component={RouterLink} 
                   to="/register"
                   sx={{ display: { xs: 'none', md: 'flex' } }}
                 >

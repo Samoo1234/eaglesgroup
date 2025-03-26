@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   AppBar,
@@ -127,7 +127,7 @@ const MainLayout = ({ children }) => {
     {
       text: 'Equipe',
       icon: <GroupIcon />,
-      path: '/dashboard/team'
+      path: '/dashboard/personnel'
     },
     {
       text: 'Agendamentos',
@@ -136,6 +136,11 @@ const MainLayout = ({ children }) => {
     }
   ];
   
+  // Função para navegar para uma rota específica
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   const drawer = (
     <div>
       <Toolbar sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
@@ -147,7 +152,7 @@ const MainLayout = ({ children }) => {
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
-            <ListItemButton onClick={() => navigate(item.path)}>
+            <ListItemButton onClick={() => handleNavigation(item.path)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
@@ -349,7 +354,7 @@ const MainLayout = ({ children }) => {
         }}
       >
         <Toolbar /> {/* This creates space at the top for the AppBar */}
-        <Outlet /> {/* This renders the current route's component */}
+        {children} {/* Renderiza o componente filho passado como prop */}
       </Box>
     </Box>
   );

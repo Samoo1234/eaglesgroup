@@ -35,7 +35,7 @@ import {
   Add as AddIcon,
   Business as BusinessIcon,
   Person as PersonIcon,
-  AttachMoney as AttachMoneyIcon,
+  AttachMoney as MoneyIcon,
   Assignment as AssignmentIcon,
   Inventory as InventoryIcon,
   Construction as ConstructionIcon,
@@ -257,8 +257,18 @@ const Dashboard = () => {
   const getCompanyMenuItems = () => {
     const commonItems = [
       { name: 'Clientes', icon: <PeopleIcon />, path: '/dashboard/clients' },
-      { name: 'Financeiro', icon: <AttachMoneyIcon />, path: '/dashboard/finance' },
+      { name: 'Financeiro', icon: <MoneyIcon />, path: '/dashboard/finance' },
     ];
+
+    // Verificar se currentCompany existe antes de acessar suas propriedades
+    if (!currentCompany || !currentCompany.type) {
+      return [
+        ...commonItems,
+        { name: 'Materiais', icon: <InventoryIcon />, path: '/dashboard/materials' },
+        { name: 'Projetos', icon: <BusinessIcon />, path: '/dashboard/projects' },
+        { name: 'Equipe', icon: <GroupIcon />, path: '/dashboard/team' }
+      ];
+    }
 
     // Adicionar itens de menu específicos por tipo de empresa
     switch (currentCompany.type) {
@@ -350,21 +360,75 @@ const Dashboard = () => {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Dashboard - {currentCompany.name}
+            Dashboard - {currentCompany ? currentCompany.name : 'Carregando...'}
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${240}px)` } }}>
+        <Toolbar />
         <Grid container spacing={3}>
+          {/* Links de navegação rápida */}
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Navegação Rápida</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  startIcon={<PeopleIcon />}
+                  component={RouterLink}
+                  to="/dashboard/clients"
+                >
+                  Clientes
+                </Button>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  startIcon={<BusinessIcon />}
+                  component={RouterLink}
+                  to="/dashboard/projects"
+                >
+                  Projetos
+                </Button>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  startIcon={<InventoryIcon />}
+                  component={RouterLink}
+                  to="/dashboard/materials"
+                >
+                  Materiais
+                </Button>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  startIcon={<MoneyIcon />}
+                  component={RouterLink}
+                  to="/dashboard/finance"
+                >
+                  Financeiro
+                </Button>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  startIcon={<GroupIcon />}
+                  component={RouterLink}
+                  to="/dashboard/team"
+                >
+                  Equipe
+                </Button>
+              </Box>
+            </Paper>
+          </Grid>
           {/* Estatísticas */}
           <Grid item xs={12}>
             <Typography variant="h4" gutterBottom>
-              Bem-vindo ao Dashboard da {currentCompany.name}
+              Bem-vindo ao Dashboard da {currentCompany ? currentCompany.name : 'Carregando...'}
             </Typography>
             <Typography variant="body1" paragraph>
-              {currentCompany.type === 'construction' && 'Gerencie seus projetos de construção, materiais e equipes em um só lugar.'}
-              {currentCompany.type === 'concrete' && 'Controle sua produção de concreto, estoque de materiais e entregas.'}
-              {currentCompany.type === 'cleaning' && 'Organize seus agendamentos de limpeza, equipes e suprimentos.'}
+              {currentCompany && currentCompany.type === 'construction' && 'Gerencie seus projetos de construção, materiais e equipes em um só lugar.'}
+              {currentCompany && currentCompany.type === 'concrete' && 'Controle sua produção de concreto, estoque de materiais e entregas.'}
+              {currentCompany && currentCompany.type === 'cleaning' && 'Organize seus agendamentos de limpeza, equipes e suprimentos.'}
             </Typography>
           </Grid>
           {/* Cards de Resumo */}
@@ -377,7 +441,7 @@ const Dashboard = () => {
                       Receita Total
                     </Typography>
                     <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
-                      <AttachMoneyIcon />
+                      <MoneyIcon />
                     </Avatar>
                   </Box>
                   <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', mb: 1 }}>
@@ -716,7 +780,7 @@ const Dashboard = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Container>
+      </Box>
     </Box>
   );
 };
